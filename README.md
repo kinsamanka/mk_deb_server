@@ -27,7 +27,7 @@ Docker-compose scripts for hosting the packages built by Travis-CI
   The user must have admin privileges over `<USER/machinekit>`
  
 - Add GPG signing key  
-  A passwordless GPG subkey is needed for reprepro. Follow the steps as outlined [here](https://www.gnupg.org/faq/gnupg-faq.html#automated_use) to remove the passphrase. Copy `secring.auto` to `keys/no_passwd_reprepro.key`.
+  A passwordless GPG subkey is needed for reprepro. Follow the steps as outlined [here](https://www.gnupg.org/faq/gnupg-faq.html#automated_use) to remove the passphrase. Copy `secring.auto` to `keys/no_passwd_reprepro.key`. A more detailed guide for setting up a GPG key for passwordless signing can be found [here](https://www.digitalocean.com/community/tutorials/how-to-use-reprepro-for-a-secure-package-repository-on-ubuntu-14-04).
 
 - Startup the docker containers
 
@@ -78,6 +78,7 @@ Docker-compose scripts for hosting the packages built by Travis-CI
 
 - To add a package:
   - Copy the new package to `<mk_deb_server dir>/incoming`
+  - check if the package is signed by running `debsig-verify <package.deb>`
   - If the package has not been signed with the GPG key, run the following command first:
     ```
     docker exec mk_reprepro dpkg-sig -k <GPG_KEY> --sign builder /incoming/<package.deb>
@@ -99,3 +100,10 @@ Docker-compose scripts for hosting the packages built by Travis-CI
   Take note of the debian package naming scheme:
 
     `<packagename>_<VersionNumber>-<DebianRevisionNumber>_<DebianArchitecture>.deb`
+  
+  Example: if the package name is `libczmq-dbg_2.2.0-0.6~1jessie~1da_amd64.deb`, remove it by executing:
+  ```
+  docker exec <container> reprepro remove jessie libczmq-dbg
+  ```
+
+  
