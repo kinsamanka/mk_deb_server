@@ -106,4 +106,7 @@ Docker-compose scripts for hosting the packages built by Travis-CI
   docker exec <container> reprepro remove jessie libczmq-dbg
   ```
 
-  
+  ## Administrative commands
+- executing a shell with a particular container:
+
+  `docker exec -it <container> bash`
