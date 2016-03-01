@@ -16,10 +16,6 @@ import_debs() {
         rm -f ${TEMP_DIR}/machinekit-dev_*deb
         rm -f ${TEMP_DIR}/machinekit_*deb
     fi
-    # sign if key is available
-    if [ ! -z ${GPG_SIG+x} ]; then
-        dpkg-sig -k ${GPG_SIG} --sign builder ${TEMP_DIR}/*deb
-    fi
     
     reprepro --confdir ${CONF_DIR} \
         includedeb ${dist} ${TEMP_DIR}/*deb
